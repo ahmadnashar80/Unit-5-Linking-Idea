@@ -1,0 +1,1945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LINK IT! English Learning Adventure</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f0f4f8;
+      color: #1e293b;
+      user-select: none;
+    }
+
+    .card-shadow {
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+    }
+
+    .btn-bounce {
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .btn-bounce:active {
+      transform: scale(0.96);
+    }
+
+    /* Custom print styling for certificate/report */
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #print-section, #print-section * {
+        visibility: visible;
+      }
+      #print-section {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+
+    .badge-and { background-color: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
+    .badge-but { background-color: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+    .badge-so { background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-blue-200">
+
+  <!-- Top Navigation Bar -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3 cursor-pointer" onclick="navigateTo('welcome')">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white font-black text-xl shadow-md">
+          L!
+        </div>
+        <div>
+          <h1 class="font-extrabold text-base sm:text-lg text-slate-800 leading-tight">LINK IT!</h1>
+          <p class="text-xs text-slate-500 font-medium">Connecting AND, BUT & SO</p>
+        </div>
+      </div>
+
+      <!-- Controls & Mode Toggles -->
+      <div class="flex items-center space-x-2 sm:space-x-4">
+        <!-- Student Info Badge -->
+        <div class="hidden md:flex items-center space-x-2 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
+          <span class="text-xs font-semibold text-slate-500">Student:</span>
+          <span id="nav-student-name" class="text-xs font-bold text-slate-700">Guest</span>
+          <span id="nav-student-class" class="text-xs bg-blue-100 text-blue-700 font-bold px-1.5 py-0.5 rounded">VIII G</span>
+        </div>
+
+        <!-- Mode Selectors -->
+        <button onclick="togglePresentationMode()" id="btn-pres-mode" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200 hover:bg-amber-100 transition">
+          📺 Presentation
+        </button>
+        <button onclick="toggleTeacherMode()" id="btn-teacher-mode" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-purple-50 text-purple-700 border border-purple-200 hover:bg-purple-100 transition">
+          👩‍🏫 Teacher
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main View Container -->
+  <main id="main-container" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full">
+
+    <!-- Teacher Guide Notification Banner -->
+    <div id="timing-guide-banner" class="mb-6 p-4 bg-indigo-900 text-white rounded-2xl shadow-lg flex flex-col md:flex-row justify-between items-start md:items-center gap-4 hidden no-print">
+      <div>
+        <span class="inline-block px-2.5 py-0.5 rounded text-xs font-bold bg-indigo-700 text-indigo-200 mb-1">Timing Guide</span>
+        <h4 class="font-bold text-sm">Suggested Lesson Schedule</h4>
+        <p class="text-xs text-indigo-200 mt-0.5" id="timing-text">
+          <b>Quick Review (25m):</b> Warm-up (3m) • Meaning Lab (5m) • Guided Practice (7m) • Game (7m) • Exit Ticket (3m)
+        </p>
+      </div>
+      <div class="flex gap-2">
+        <button onclick="setTimingPreset('quick')" class="px-3 py-1 bg-indigo-700 hover:bg-indigo-600 text-xs font-semibold rounded-lg">25 Min Mode</button>
+        <button onclick="setTimingPreset('full')" class="px-3 py-1 bg-indigo-700 hover:bg-indigo-600 text-xs font-semibold rounded-lg">50 Min Mode</button>
+      </div>
+    </div>
+
+    <!-- SECTION 1: WELCOME & LEARNING GOALS -->
+    <section id="screen-welcome" class="screen-view space-y-8">
+      <!-- Hero Banner -->
+      <div class="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white rounded-3xl p-6 sm:p-10 shadow-xl relative overflow-hidden">
+        <div class="relative z-10 max-w-2xl">
+          <span class="bg-blue-400/30 text-blue-100 text-xs font-bold px-3 py-1 rounded-full border border-blue-300/30">Class VIII SMP English</span>
+          <h2 class="text-3xl sm:text-5xl font-black mt-3 mb-2 leading-tight">LINK IT!</h2>
+          <p class="text-lg sm:text-xl font-medium text-blue-100">Connecting Ideas with <span class="bg-white/20 px-2 py-0.5 rounded font-bold">AND</span>, <span class="bg-white/20 px-2 py-0.5 rounded font-bold">BUT</span>, and <span class="bg-white/20 px-2 py-0.5 rounded font-bold">SO</span></p>
+          <p class="mt-4 text-sm sm:text-base text-blue-200">Master the art of joining thoughts smoothly in English! Let's build stronger sentences together.</p>
+          
+          <div class="mt-8 flex flex-wrap gap-4">
+            <button onclick="navigateTo('meaning-lab')" class="px-6 py-3 bg-amber-400 hover:bg-amber-300 text-slate-900 font-extrabold rounded-xl shadow-lg btn-bounce text-sm sm:text-base">
+              🚀 Start Learning Now
+            </button>
+            <button onclick="navigateTo('final-challenge')" class="px-6 py-3 bg-white/10 hover:bg-white/20 text-white border border-white/30 font-semibold rounded-xl btn-bounce text-sm sm:text-base">
+              📝 Jump to Final Quiz
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- User Identification Box -->
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 card-shadow flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="w-full md:w-1/2 space-y-2">
+          <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+            👤 Student Identity / Identitas Siswa
+          </h3>
+          <p class="text-xs text-slate-500">Enter your name and class before starting activities or quizzes.</p>
+          <div class="grid grid-cols-3 gap-3 pt-2">
+            <div class="col-span-2">
+              <label class="text-xs font-semibold text-slate-600 block mb-1">Full Name</label>
+              <input type="text" id="input-student-name" placeholder="e.g. Budi Santoso" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+            </div>
+            <div>
+              <label class="text-xs font-semibold text-slate-600 block mb-1">Class</label>
+              <input type="text" id="input-student-class" value="VIII G" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+            </div>
+          </div>
+          <button onclick="saveStudentProfile()" class="mt-2 text-xs font-bold text-blue-600 hover:text-blue-800">✓ Save Profile</button>
+        </div>
+
+        <div class="w-full md:w-1/2 bg-blue-50 border border-blue-100 p-4 rounded-xl text-xs text-blue-900 space-y-1.5">
+          <span class="font-bold text-blue-700 flex items-center gap-1">🎯 Today's Mission / Misi Hari Ini</span>
+          <p class="text-sm italic">"Your mission is to connect ideas and create your own English sentences!"</p>
+          <p class="text-slate-600">Gabungkan ide-ide sederhana menjadi kalimat Bahasa Inggris yang padu dan benar menggunakan kata hubung yang tepat.</p>
+        </div>
+      </div>
+
+      <!-- 3 Core Concept Cards Quick Preview -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded-2xl border-t-4 border-blue-500 card-shadow hover:translate-y-1 transition">
+          <div class="flex items-center justify-between mb-3">
+            <span class="px-3 py-1 rounded-full badge-and font-extrabold text-sm">AND</span>
+            <span class="text-2xl">➕</span>
+          </div>
+          <h4 class="font-bold text-slate-800 text-base">Add an idea</h4>
+          <p class="text-xs text-slate-500 mt-1">Menambahkan informasi yang sejalan atau setara.</p>
+          <div class="mt-4 p-3 bg-slate-50 rounded-xl text-xs font-mono text-slate-700">
+            Idea A + Idea B<br>
+            <span class="text-blue-600 font-semibold">I like rice AND noodles.</span>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl border-t-4 border-amber-500 card-shadow hover:translate-y-1 transition">
+          <div class="flex items-center justify-between mb-3">
+            <span class="px-3 py-1 rounded-full badge-but font-extrabold text-sm">BUT</span>
+            <span class="text-2xl">⚡</span>
+          </div>
+          <h4 class="font-bold text-slate-800 text-base">Show a contrast</h4>
+          <p class="text-xs text-slate-500 mt-1">Menunjukkan pertentangan atau perbedaan.</p>
+          <div class="mt-4 p-3 bg-slate-50 rounded-xl text-xs font-mono text-slate-700">
+            Idea A ⇸ Idea B<br>
+            <span class="text-amber-700 font-semibold">I am tired, BUT I study.</span>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl border-t-4 border-emerald-500 card-shadow hover:translate-y-1 transition">
+          <div class="flex items-center justify-between mb-3">
+            <span class="px-3 py-1 rounded-full badge-so font-extrabold text-sm">SO</span>
+            <span class="text-2xl">➡️</span>
+          </div>
+          <h4 class="font-bold text-slate-800 text-base">Show a result</h4>
+          <p class="text-xs text-slate-500 mt-1">Menunjukkan akibat atau hasil dari situasi.</p>
+          <div class="mt-4 p-3 bg-slate-50 rounded-xl text-xs font-mono text-slate-700">
+            Cause ➔ Result<br>
+            <span class="text-emerald-700 font-semibold">I was hungry, SO I ate.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Learning Objectives Accordion -->
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 card-shadow">
+        <h3 class="font-bold text-slate-800 text-base mb-4 flex items-center gap-2">
+          📌 Learning Objectives / Tujuan Pembelajaran
+        </h3>
+        <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs sm:text-sm text-slate-600">
+          <li class="flex items-start gap-2 bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+            <span class="text-blue-500 font-bold">1.</span>
+            <span>Explain the function of <b>AND, BUT, SO</b> in simple terms. (Menjelaskan fungsi kata hubung).</span>
+          </li>
+          <li class="flex items-start gap-2 bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+            <span class="text-blue-500 font-bold">2.</span>
+            <span>Distinguish between addition, contrast, and result relationships. (Membedakan jenis hubungan kalimat).</span>
+          </li>
+          <li class="flex items-start gap-2 bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+            <span class="text-blue-500 font-bold">3.</span>
+            <span>Select the correct linking word based on context. (Memilih kata hubung yang tepat).</span>
+          </li>
+          <li class="flex items-start gap-2 bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+            <span class="text-blue-500 font-bold">4.</span>
+            <span>Combine two sentences into one well-structured sentence. (Menggabungkan dua kalimat).</span>
+          </li>
+          <li class="flex items-start gap-2 bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+            <span class="text-blue-500 font-bold">5.</span>
+            <span>Create original sentences about daily life & school. (Membuat kalimat karya sendiri).</span>
+          </li>
+          <li class="flex items-start gap-2 bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+            <span class="text-blue-500 font-bold">6.</span>
+            <span>Earn an individual assessment report score. (Mendapatkan laporan nilai akhir).</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- SECTION 2: MEANING LAB -->
+    <section id="screen-meaning-lab" class="screen-view hidden space-y-6">
+      <div class="border-b border-slate-200 pb-4 flex justify-between items-end">
+        <div>
+          <span class="text-xs font-bold uppercase text-blue-600 tracking-wider">Lesson 2 of 8</span>
+          <h2 class="text-2xl font-black text-slate-800">Meaning Lab 🧪</h2>
+          <p class="text-sm text-slate-500">Explore the exact meaning and function of each linking word.</p>
+        </div>
+      </div>
+
+      <!-- Tab Buttons for Words -->
+      <div class="flex gap-2 border-b border-slate-200 pb-2">
+        <button onclick="switchMeaningTab('and')" id="tab-btn-and" class="px-5 py-2.5 rounded-xl font-bold text-sm bg-blue-600 text-white shadow-md transition">AND (Addition)</button>
+        <button onclick="switchMeaningTab('but')" id="tab-btn-but" class="px-5 py-2.5 rounded-xl font-bold text-sm bg-slate-200 text-slate-700 hover:bg-slate-300 transition">BUT (Contrast)</button>
+        <button onclick="switchMeaningTab('so')" id="tab-btn-so" class="px-5 py-2.5 rounded-xl font-bold text-sm bg-slate-200 text-slate-700 hover:bg-slate-300 transition">SO (Result)</button>
+      </div>
+
+      <!-- Tab Contents -->
+      <div id="tab-content-meaning" class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 card-shadow">
+        <!-- Content inserted dynamically by JS -->
+      </div>
+
+      <!-- Interactive Quick Practice Check in Meaning Lab -->
+      <div class="bg-gradient-to-br from-slate-900 to-slate-800 text-white p-6 rounded-2xl card-shadow space-y-4">
+        <div class="flex items-center justify-between">
+          <h3 class="font-bold text-base flex items-center gap-2 text-amber-400">
+            🔍 Choose the Meaning (Uji Pemahaman Singkat)
+          </h3>
+          <span class="text-xs bg-slate-700 text-slate-300 px-2.5 py-1 rounded-full">Interactive Practice</span>
+        </div>
+        <p class="text-sm text-slate-300" id="meaning-quiz-question">Loading question...</p>
+        
+        <div id="meaning-quiz-options" class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+          <!-- Options injected by JS -->
+        </div>
+
+        <div id="meaning-quiz-feedback" class="hidden p-3 rounded-xl text-xs font-semibold"></div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: GRAMMAR DETECTIVE -->
+    <section id="screen-grammar-detective" class="screen-view hidden space-y-6">
+      <div class="border-b border-slate-200 pb-4 flex justify-between items-end">
+        <div>
+          <span class="text-xs font-bold uppercase text-blue-600 tracking-wider">Lesson 3 of 8</span>
+          <h2 class="text-2xl font-black text-slate-800">Grammar Detective 🕵️‍♂️</h2>
+          <p class="text-sm text-slate-500">Analyze the relationship between two sentences before picking a connector.</p>
+        </div>
+        <div class="text-right">
+          <span class="text-xs text-slate-400 block font-semibold">Question</span>
+          <span id="gd-progress" class="text-lg font-black text-blue-600">1 / 9</span>
+        </div>
+      </div>
+
+      <!-- Detective Card View -->
+      <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 card-shadow space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="bg-blue-50 border border-blue-200 p-4 rounded-xl">
+            <span class="text-xs font-extrabold text-blue-600 uppercase tracking-wider block mb-1">Sentence A (Idea 1)</span>
+            <p id="gd-sentence-a" class="text-base sm:text-lg font-bold text-slate-800">I like football.</p>
+          </div>
+          <div class="bg-indigo-50 border border-indigo-200 p-4 rounded-xl">
+            <span class="text-xs font-extrabold text-indigo-600 uppercase tracking-wider block mb-1">Sentence B (Idea 2)</span>
+            <p id="gd-sentence-b" class="text-base sm:text-lg font-bold text-slate-800">I like badminton.</p>
+          </div>
+        </div>
+
+        <div class="text-center py-2">
+          <p class="text-sm font-bold text-slate-700">What is the logical relationship between Sentence A and Sentence B?</p>
+          <p class="text-xs text-slate-500">Apa hubungan makna antara kedua kalimat di atas?</p>
+        </div>
+
+        <!-- 3 Logic Choices -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <button onclick="checkDetectiveAnswer('addition')" id="gd-btn-addition" class="p-4 rounded-xl border-2 border-slate-200 hover:border-blue-500 bg-slate-50 hover:bg-blue-50 text-slate-800 font-bold transition flex flex-col items-center gap-1 btn-bounce">
+            <span class="text-2xl">➕</span>
+            <span>Addition</span>
+            <span class="text-xs font-normal text-slate-500">(Penambahan Info)</span>
+          </button>
+
+          <button onclick="checkDetectiveAnswer('contrast')" id="gd-btn-contrast" class="p-4 rounded-xl border-2 border-slate-200 hover:border-amber-500 bg-slate-50 hover:bg-amber-50 text-slate-800 font-bold transition flex flex-col items-center gap-1 btn-bounce">
+            <span class="text-2xl">⚡</span>
+            <span>Contrast</span>
+            <span class="text-xs font-normal text-slate-500">(Pertentangan)</span>
+          </button>
+
+          <button onclick="checkDetectiveAnswer('result')" id="gd-btn-result" class="p-4 rounded-xl border-2 border-slate-200 hover:border-emerald-500 bg-slate-50 hover:bg-emerald-50 text-slate-800 font-bold transition flex flex-col items-center gap-1 btn-bounce">
+            <span class="text-2xl">➡️</span>
+            <span>Result</span>
+            <span class="text-xs font-normal text-slate-500">(Sebab - Akibat)</span>
+          </button>
+        </div>
+
+        <!-- Explanation Drawer -->
+        <div id="gd-feedback-box" class="hidden p-4 rounded-xl border text-xs sm:text-sm leading-relaxed space-y-2">
+          <!-- Populated by JS -->
+        </div>
+
+        <div class="flex justify-between items-center pt-4 border-t border-slate-100">
+          <button onclick="prevDetectiveQuestion()" id="gd-prev-btn" class="px-4 py-2 bg-slate-100 text-slate-600 rounded-lg text-xs font-bold hover:bg-slate-200">← Back</button>
+          <button onclick="nextDetectiveQuestion()" id="gd-next-btn" class="px-5 py-2.5 bg-blue-600 text-white rounded-lg text-xs font-bold hover:bg-blue-700 shadow-md">Next Case →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: GUIDED PRACTICE -->
+    <section id="screen-guided-practice" class="screen-view hidden space-y-6">
+      <div class="border-b border-slate-200 pb-4 flex justify-between items-end">
+        <div>
+          <span class="text-xs font-bold uppercase text-blue-600 tracking-wider">Lesson 4 of 8</span>
+          <h2 class="text-2xl font-black text-slate-800">Guided Practice ✍️</h2>
+          <p class="text-sm text-slate-500">Step-by-step exercises to strengthen your sentence skills.</p>
+        </div>
+      </div>
+
+      <!-- Level Selector Tabs -->
+      <div class="grid grid-cols-3 gap-2">
+        <button onclick="switchGuidedLevel(1)" id="guided-tab-1" class="py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm bg-blue-600 text-white shadow-sm transition">
+          Level 1: Choose Word
+        </button>
+        <button onclick="switchGuidedLevel(2)" id="guided-tab-2" class="py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm bg-slate-200 text-slate-700 hover:bg-slate-300 transition">
+          Level 2: Connect Sentences
+        </button>
+        <button onclick="switchGuidedLevel(3)" id="guided-tab-3" class="py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm bg-slate-200 text-slate-700 hover:bg-slate-300 transition">
+          Level 3: Best Connection
+        </button>
+      </div>
+
+      <!-- Practice Content Card -->
+      <div id="guided-practice-content" class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 card-shadow space-y-6">
+        <!-- Dynamic Level Content Injected Here -->
+      </div>
+    </section>
+
+    <!-- SECTION 5: GAME CENTER -->
+    <section id="screen-game-center" class="screen-view hidden space-y-6">
+      <div class="border-b border-slate-200 pb-4 flex justify-between items-end">
+        <div>
+          <span class="text-xs font-bold uppercase text-blue-600 tracking-wider">Lesson 5 of 8</span>
+          <h2 class="text-2xl font-black text-slate-800">Game Center 🎮</h2>
+          <p class="text-sm text-slate-500">Fun interactive games to test your speed and precision!</p>
+        </div>
+      </div>
+
+      <!-- Game Selection Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div onclick="launchGame('rush')" class="bg-gradient-to-br from-blue-500 to-indigo-600 text-white p-6 rounded-2xl shadow-lg cursor-pointer hover:scale-105 transition btn-bounce flex flex-col justify-between h-48">
+          <div>
+            <span class="px-2.5 py-1 rounded-md text-xs font-extrabold bg-white/20">Game A</span>
+            <h3 class="text-xl font-extrabold mt-2">Linking Word Rush</h3>
+            <p class="text-xs text-blue-100 mt-1">Fast-paced multiple choice! Earn points for quick & correct connectors.</p>
+          </div>
+          <div class="flex items-center justify-between text-xs font-bold text-blue-200">
+            <span>10 Questions</span>
+            <span>PLAY NOW ➔</span>
+          </div>
+        </div>
+
+        <div onclick="launchGame('rescue')" class="bg-gradient-to-br from-amber-500 to-orange-600 text-white p-6 rounded-2xl shadow-lg cursor-pointer hover:scale-105 transition btn-bounce flex flex-col justify-between h-48">
+          <div>
+            <span class="px-2.5 py-1 rounded-md text-xs font-extrabold bg-white/20">Game B</span>
+            <h3 class="text-xl font-extrabold mt-2">Sentence Rescue</h3>
+            <p class="text-xs text-amber-100 mt-1">Rescue broken sentences by picking the right connector word.</p>
+          </div>
+          <div class="flex items-center justify-between text-xs font-bold text-amber-200">
+            <span>8 Challenges</span>
+            <span>PLAY NOW ➔</span>
+          </div>
+        </div>
+
+        <div onclick="launchGame('twoideas')" class="bg-gradient-to-br from-emerald-500 to-teal-600 text-white p-6 rounded-2xl shadow-lg cursor-pointer hover:scale-105 transition btn-bounce flex flex-col justify-between h-48">
+          <div>
+            <span class="px-2.5 py-1 rounded-md text-xs font-extrabold bg-white/20">Game C</span>
+            <h3 class="text-xl font-extrabold mt-2">Two Ideas, One Sentence</h3>
+            <p class="text-xs text-emerald-100 mt-1">Merge two separate ideas into a smooth single sentence!</p>
+          </div>
+          <div class="flex items-center justify-between text-xs font-bold text-emerald-200">
+            <span>5 Merge Tasks</span>
+            <span>PLAY NOW ➔</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Active Game Arena Container -->
+      <div id="game-arena" class="hidden bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 card-shadow space-y-6">
+        <!-- Game Interface Injected Dynamic -->
+      </div>
+    </section>
+
+    <!-- SECTION 6: SENTENCE BUILDER -->
+    <section id="screen-sentence-builder" class="screen-view hidden space-y-6">
+      <div class="border-b border-slate-200 pb-4 flex justify-between items-end">
+        <div>
+          <span class="text-xs font-bold uppercase text-blue-600 tracking-wider">Lesson 6 of 8</span>
+          <h2 class="text-2xl font-black text-slate-800">Sentence Builder 🏗️</h2>
+          <p class="text-sm text-slate-500">Bridge guided practice into writing your own original sentences.</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Mode A: Guided Template Builder -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 card-shadow space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-md">Mode A</span>
+            <h3 class="text-base font-bold text-slate-800">Build with Templates</h3>
+          </div>
+          <p class="text-xs text-slate-500">Select words or fill in the blanks using guided sentence formulas.</p>
+
+          <div class="space-y-4 pt-2">
+            <!-- Sentence 1 -->
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+              <span class="text-xs font-bold text-blue-700">1. Formula WITH AND:</span>
+              <div class="flex flex-wrap items-center gap-1.5 text-xs sm:text-sm font-semibold text-slate-800">
+                <span>I like</span>
+                <input type="text" id="builder-a1" placeholder="e.g. playing football" class="px-2 py-1 border border-slate-300 rounded outline-none text-xs w-32 focus:ring-1 focus:ring-blue-500">
+                <span class="px-2 py-0.5 rounded badge-and font-extrabold text-xs">AND</span>
+                <input type="text" id="builder-a2" placeholder="e.g. reading books" class="px-2 py-1 border border-slate-300 rounded outline-none text-xs w-32 focus:ring-1 focus:ring-blue-500">
+              </div>
+            </div>
+
+            <!-- Sentence 2 -->
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+              <span class="text-xs font-bold text-amber-700">2. Formula WITH BUT:</span>
+              <div class="flex flex-wrap items-center gap-1.5 text-xs sm:text-sm font-semibold text-slate-800">
+                <span>I wanted to buy a shirt,</span>
+                <span class="px-2 py-0.5 rounded badge-but font-extrabold text-xs">BUT</span>
+                <input type="text" id="builder-b1" placeholder="e.g. it was too expensive" class="px-2 py-1 border border-slate-300 rounded outline-none text-xs w-48 focus:ring-1 focus:ring-amber-500">
+              </div>
+            </div>
+
+            <!-- Sentence 3 -->
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+              <span class="text-xs font-bold text-emerald-700">3. Formula WITH SO:</span>
+              <div class="flex flex-wrap items-center gap-1.5 text-xs sm:text-sm font-semibold text-slate-800">
+                <span>I was very sleepy,</span>
+                <span class="px-2 py-0.5 rounded badge-so font-extrabold text-xs">SO</span>
+                <input type="text" id="builder-c1" placeholder="e.g. I went to sleep early" class="px-2 py-1 border border-slate-300 rounded outline-none text-xs w-48 focus:ring-1 focus:ring-emerald-500">
+              </div>
+            </div>
+          </div>
+
+          <button onclick="checkBuilderModeA()" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow transition">
+            Check Template Sentences
+          </button>
+          <div id="builder-feedback-a" class="hidden p-3 rounded-xl text-xs font-semibold"></div>
+        </div>
+
+        <!-- Mode B: Original Creative Writing -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 card-shadow space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-purple-600 bg-purple-50 px-2.5 py-1 rounded-md">Mode B</span>
+            <h3 class="text-base font-bold text-slate-800">Create Your Own Original Sentences</h3>
+          </div>
+          <p class="text-xs text-slate-500">Write 3 original sentences about yourself, school, or daily life.</p>
+
+          <div class="space-y-3 pt-1">
+            <div>
+              <label class="text-xs font-bold text-slate-700 block mb-1">Sentence 1 (Must include 'and'):</label>
+              <textarea id="own-and-input" rows="2" placeholder="e.g. My brother likes playing basketball and I like swimming." class="w-full p-2.5 border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
+            </div>
+
+            <div>
+              <label class="text-xs font-bold text-slate-700 block mb-1">Sentence 2 (Must include 'but'):</label>
+              <textarea id="own-but-input" rows="2" placeholder="e.g. She studied hard for the test, but she was still nervous." class="w-full p-2.5 border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-amber-500 outline-none"></textarea>
+            </div>
+
+            <div>
+              <label class="text-xs font-bold text-slate-700 block mb-1">Sentence 3 (Must include 'so'):</label>
+              <textarea id="own-so-input" rows="2" placeholder="e.g. It was raining heavily outside, so we played board games inside." class="w-full p-2.5 border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-emerald-500 outline-none"></textarea>
+            </div>
+          </div>
+
+          <!-- Helpful hints drawer -->
+          <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900 space-y-1">
+            <span class="font-bold block">💡 Vocabulary & Hints:</span>
+            <p class="text-[11px] text-amber-800">Keywords to try: <i>study, tired, hungry, wet, rain, library, friend, expensive, delicious, homework.</i></p>
+          </div>
+
+          <button onclick="checkBuilderModeB()" class="w-full py-2.5 bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs rounded-xl shadow transition">
+            CHECK MY SENTENCES
+          </button>
+          <div id="builder-feedback-b" class="hidden p-3 rounded-xl text-xs space-y-2"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 7: FINAL CHALLENGE -->
+    <section id="screen-final-challenge" class="screen-view hidden space-y-6">
+      <div class="border-b border-slate-200 pb-4 flex justify-between items-end">
+        <div>
+          <span class="text-xs font-bold uppercase text-blue-600 tracking-wider">Lesson 7 of 8</span>
+          <h2 class="text-2xl font-black text-slate-800">Final Challenge 🏆</h2>
+          <p class="text-sm text-slate-500">Individual assessment test with 10 comprehensive questions.</p>
+        </div>
+        <div class="text-right">
+          <span class="text-xs text-slate-400 block font-semibold">Progress</span>
+          <span id="final-progress" class="text-lg font-black text-blue-600">Question 1 / 10</span>
+        </div>
+      </div>
+
+      <!-- Mode Selector (Practice Mode vs Assessment Mode) -->
+      <div class="bg-slate-100 p-1.5 rounded-xl flex max-w-md mx-auto text-xs font-bold">
+        <button onclick="setAssessmentMode('practice')" id="mode-btn-practice" class="w-1/2 py-2 rounded-lg bg-white shadow-sm text-blue-600 transition">
+          Practice Mode (Instant Feedback)
+        </button>
+        <button onclick="setAssessmentMode('assessment')" id="mode-btn-assessment" class="w-1/2 py-2 rounded-lg text-slate-600 transition">
+          Assessment Mode (Exam Style)
+        </button>
+      </div>
+
+      <!-- Final Challenge Question Card -->
+      <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 card-shadow space-y-6">
+        <!-- Progress Bar -->
+        <div class="w-full bg-slate-100 rounded-full h-2.5">
+          <div id="final-progress-bar" class="bg-blue-600 h-2.5 rounded-full transition-all duration-300" style="width: 10%"></div>
+        </div>
+
+        <div id="final-question-box" class="space-y-4">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- Feedback Area for Practice Mode -->
+        <div id="final-feedback-box" class="hidden p-4 rounded-xl text-xs sm:text-sm font-medium"></div>
+
+        <!-- Navigation Buttons -->
+        <div class="flex justify-between items-center pt-4 border-t border-slate-100">
+          <button onclick="prevFinalQuestion()" id="final-prev-btn" class="px-4 py-2 bg-slate-100 text-slate-600 rounded-lg text-xs font-bold hover:bg-slate-200 disabled:opacity-40">
+            ← Previous
+          </button>
+          
+          <button onclick="nextFinalQuestion()" id="final-next-btn" class="px-5 py-2.5 bg-blue-600 text-white rounded-lg text-xs font-bold hover:bg-blue-700 shadow-md">
+            Next Question →
+          </button>
+
+          <button onclick="confirmSubmitAssessment()" id="final-submit-btn" class="hidden px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-black shadow-md btn-bounce">
+            SUBMIT ASSESSMENT 🚀
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 8: MY LEARNING REPORT -->
+    <section id="screen-learning-report" class="screen-view hidden space-y-6">
+      <div class="border-b border-slate-200 pb-4 flex justify-between items-end no-print">
+        <div>
+          <span class="text-xs font-bold uppercase text-blue-600 tracking-wider">Lesson 8 of 8</span>
+          <h2 class="text-2xl font-black text-slate-800">My Learning Report 📜</h2>
+          <p class="text-sm text-slate-500">Official achievement report ready to screenshot or print for Google Classroom.</p>
+        </div>
+      </div>
+
+      <!-- Printable / Screenshot Report Certificate Box -->
+      <div id="print-section" class="bg-white p-8 rounded-3xl border-2 border-blue-500 card-shadow space-y-6 max-w-3xl mx-auto relative overflow-hidden">
+        <!-- Certificate Header Badge -->
+        <div class="flex justify-between items-center border-b-2 border-slate-100 pb-4">
+          <div class="flex items-center space-x-3">
+            <div class="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center text-white font-black text-2xl">
+              L!
+            </div>
+            <div>
+              <h2 class="text-xl font-black text-slate-800">LINK IT! English Learning Adventure</h2>
+              <p class="text-xs text-slate-500 font-medium">Connecting Ideas with AND, BUT, and SO • SMP Class VIII</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-200">
+              OFFICIAL RESULT
+            </span>
+          </div>
+        </div>
+
+        <!-- Student Meta Info -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-200 text-xs">
+          <div>
+            <span class="text-slate-400 font-semibold block">Student Name:</span>
+            <span id="report-name" class="font-extrabold text-slate-800 text-sm">Budi Santoso</span>
+          </div>
+          <div>
+            <span class="text-slate-400 font-semibold block">Class / Group:</span>
+            <span id="report-class" class="font-bold text-slate-800 text-sm">VIII G</span>
+          </div>
+          <div>
+            <span class="text-slate-400 font-semibold block">Date Completed:</span>
+            <span id="report-date" class="font-bold text-slate-800 text-sm">Today</span>
+          </div>
+          <div>
+            <span class="text-slate-400 font-semibold block">Status:</span>
+            <span class="font-extrabold text-emerald-600 text-sm">Completed ✓</span>
+          </div>
+        </div>
+
+        <!-- Score Big Display -->
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-6 bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-2xl border border-blue-100">
+          <div class="text-center sm:text-left">
+            <span class="text-xs font-bold text-blue-600 uppercase tracking-wide">Final Assessment Score</span>
+            <div class="flex items-baseline space-x-2 justify-center sm:justify-start">
+              <span id="report-score" class="text-5xl font-black text-slate-900">90</span>
+              <span class="text-lg font-bold text-slate-400">/ 100</span>
+            </div>
+            <p id="report-interpretation" class="text-xs font-bold text-emerald-700 mt-1">Excellent! You understand how to connect ideas.</p>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3 text-center text-xs">
+            <div class="bg-white p-3 rounded-xl border border-slate-200">
+              <span class="text-slate-400 block font-semibold">Correct Answers</span>
+              <span id="report-correct" class="text-lg font-black text-emerald-600">9 / 10</span>
+            </div>
+            <div class="bg-white p-3 rounded-xl border border-slate-200">
+              <span class="text-slate-400 block font-semibold">Accuracy</span>
+              <span id="report-percentage" class="text-lg font-black text-blue-600">90%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mastery Summary & Recommendation -->
+        <div class="space-y-3">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500">Learning Mastery Summary</h4>
+          <div id="report-summary-box" class="p-4 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-700 leading-relaxed space-y-1">
+            <!-- Dynamic feedback summary -->
+          </div>
+        </div>
+
+        <!-- Classroom submission warning box -->
+        <div class="no-print p-4 bg-amber-50 border border-amber-200 rounded-2xl text-xs text-amber-900 flex items-start gap-3">
+          <span class="text-xl">📸</span>
+          <div>
+            <span class="font-bold block">Instruction for Google Classroom Submission:</span>
+            <p>Take a screenshot of this result report card and submit it to your Google Classroom assignment as instructed by your teacher.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons for Report -->
+      <div class="flex flex-wrap justify-center gap-4 no-print pt-2">
+        <button onclick="window.print()" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-xl shadow transition btn-bounce">
+          🖨️ Print / Save as PDF
+        </button>
+        <button onclick="reviewAnswersModal()" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow transition btn-bounce">
+          🔍 Review My Answers
+        </button>
+        <button onclick="restartAssessment()" class="px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold rounded-xl shadow transition btn-bounce">
+          🔄 Retake Final Quiz
+        </button>
+        <button onclick="navigateTo('welcome')" class="px-5 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-bold rounded-xl transition">
+          🏠 Return Home
+        </button>
+      </div>
+    </section>
+
+    <!-- TEACHER MODE PANEL (MODAL) -->
+    <div id="modal-teacher" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 space-y-6 shadow-2xl">
+        <div class="flex justify-between items-center border-b border-slate-200 pb-4">
+          <div>
+            <span class="text-xs font-bold text-purple-600 uppercase">Teacher Control Panel</span>
+            <h3 class="text-xl font-extrabold text-slate-800">Teacher Mode & Answer Keys</h3>
+          </div>
+          <button onclick="toggleTeacherMode()" class="text-slate-400 hover:text-slate-600 text-2xl font-bold">&times;</button>
+        </div>
+
+        <div class="space-y-4 text-xs">
+          <div class="bg-purple-50 border border-purple-200 p-4 rounded-xl text-purple-900 space-y-1">
+            <span class="font-bold">Pedagogical Note for Class VIII G Remedial:</span>
+            <p>Students struggle primarily with confusing <i>BUT</i> (contrast) vs <i>SO</i> (result). Emphasize that BUT alters expectation while SO delivers the logical outcome.</p>
+          </div>
+
+          <!-- Answer Key Drawer -->
+          <div>
+            <h4 class="font-bold text-slate-800 text-sm mb-2">🔑 Quick Answer Key Reference</h4>
+            <div class="space-y-2 max-h-60 overflow-y-auto p-3 bg-slate-50 rounded-xl border border-slate-200">
+              <p class="font-bold text-blue-700">Grammar Detective:</p>
+              <ul class="list-disc pl-4 space-y-0.5 text-slate-600">
+                <li>Q1: Addition (and)</li>
+                <li>Q2: Result (so)</li>
+                <li>Q3: Contrast (but)</li>
+              </ul>
+
+              <p class="font-bold text-blue-700 mt-2">Final Challenge Key:</p>
+              <ol class="list-decimal pl-4 space-y-0.5 text-slate-600">
+                <li>I like apples [and] bananas. (Addition)</li>
+                <li>It was hot outside, [so] we went swimming. (Result)</li>
+                <li>He ran fast, [but] he missed the bus. (Contrast)</li>
+                <li>She studied hard, [so] she passed the exam. (Result)</li>
+                <li>Combine (Cats/Rabbits): AND</li>
+                <li>Combine (Rain/Inside): SO</li>
+                <li>Combine (Young/Responsible): BUT</li>
+                <li>Forgot homework: SO</li>
+                <li>Tired/Study: BUT</li>
+                <li>Friendly/Shy: BUT</li>
+              </ol>
+            </div>
+          </div>
+
+          <!-- Reset Session Buttons -->
+          <div class="pt-4 border-t border-slate-200 flex flex-wrap gap-3">
+            <button onclick="resetCurrentSession()" class="px-4 py-2 bg-red-100 hover:bg-red-200 text-red-700 rounded-xl font-bold text-xs">
+              ⚠️ Reset Current Session
+            </button>
+            <button onclick="exportTeacherReport()" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-bold text-xs">
+              📊 Export Local Progress JSON
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ANSWERS REVIEW MODAL -->
+    <div id="modal-review-answers" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[85vh] overflow-y-auto p-6 sm:p-8 space-y-4 shadow-2xl">
+        <div class="flex justify-between items-center border-b border-slate-200 pb-3">
+          <h3 class="text-lg font-extrabold text-slate-800">Final Quiz Answers Review</h3>
+          <button onclick="closeReviewModal()" class="text-slate-400 hover:text-slate-600 text-2xl font-bold">&times;</button>
+        </div>
+
+        <div id="review-modal-content" class="space-y-3 text-xs">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Bottom Persistent Navigation Bar -->
+  <footer class="bg-white border-t border-slate-200 py-3 sticky bottom-0 z-30 shadow-md no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+      <button onclick="navigateStep(-1)" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold text-xs flex items-center gap-1 transition">
+        ◀ BACK
+      </button>
+
+      <!-- Horizontal Menu Indicator Bar -->
+      <div class="hidden sm:flex items-center space-x-1 text-xs">
+        <button onclick="navigateTo('welcome')" class="nav-dot px-2.5 py-1 rounded-lg font-bold text-slate-600 hover:bg-slate-100">1. Welcome</button>
+        <button onclick="navigateTo('meaning-lab')" class="nav-dot px-2.5 py-1 rounded-lg font-bold text-slate-600 hover:bg-slate-100">2. Meaning</button>
+        <button onclick="navigateTo('grammar-detective')" class="nav-dot px-2.5 py-1 rounded-lg font-bold text-slate-600 hover:bg-slate-100">3. Detective</button>
+        <button onclick="navigateTo('guided-practice')" class="nav-dot px-2.5 py-1 rounded-lg font-bold text-slate-600 hover:bg-slate-100">4. Practice</button>
+        <button onclick="navigateTo('game-center')" class="nav-dot px-2.5 py-1 rounded-lg font-bold text-slate-600 hover:bg-slate-100">5. Games</button>
+        <button onclick="navigateTo('sentence-builder')" class="nav-dot px-2.5 py-1 rounded-lg font-bold text-slate-600 hover:bg-slate-100">6. Builder</button>
+        <button onclick="navigateTo('final-challenge')" class="nav-dot px-2.5 py-1 rounded-lg font-bold text-slate-600 hover:bg-slate-100">7. Challenge</button>
+        <button onclick="navigateTo('learning-report')" class="nav-dot px-2.5 py-1 rounded-lg font-bold text-slate-600 hover:bg-slate-100">8. Report</button>
+      </div>
+
+      <button onclick="navigateStep(1)" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-xs flex items-center gap-1 transition shadow-md">
+        NEXT ▶
+      </button>
+    </div>
+  </footer>
+
+  <script>
+    // Global Navigation State
+    const screens = [
+      'welcome',
+      'meaning-lab',
+      'grammar-detective',
+      'guided-practice',
+      'game-center',
+      'sentence-builder',
+      'final-challenge',
+      'learning-report'
+    ];
+    let currentScreenIndex = 0;
+
+    // Student profile data
+    let studentData = {
+      name: "Budi Santoso",
+      class: "VIII G",
+      score: 0,
+      answers: {}
+    };
+
+    // Modes state
+    let isPresentationMode = false;
+    let isTeacherMode = false;
+    let assessmentMode = 'practice'; // 'practice' or 'assessment'
+
+    const meaningData = {
+      and: {
+        title: "AND (Adding Information)",
+        meaning: "Dan",
+        function: "Menghubungkan dua ide yang sejalan, serupa, atau menambahkan informasi.",
+        icon: "➕",
+        badgeClass: "badge-and",
+        examples: [
+          { en: "I like Ronaldo and Messi.", id: "Saya suka Ronaldo dan Messi." },
+          { en: "She likes singing and dancing.", id: "Dia suka menyanyi dan menari." },
+          { en: "My school has a library and a science laboratory.", id: "Sekolah saya memiliki perpustakaan dan laboratorium IPA." }
+        ]
+      },
+      but: {
+        title: "BUT (Showing Contrast)",
+        meaning: "Tetapi / Namun",
+        function: "Menghubungkan dua ide yang bertentangan atau menunjukkan hasil yang berbeda dari perkiraan.",
+        icon: "⚡",
+        badgeClass: "badge-but",
+        examples: [
+          { en: "I am tired, but I am still studying.", id: "Saya lelah, tetapi saya masih belajar." },
+          { en: "The bag is expensive, but it is beautiful.", id: "Tas itu mahal, tetapi tas itu indah." },
+          { en: "He is young, but he is very responsible.", id: "Dia masih muda, tetapi dia sangat bertanggung jawab." }
+        ]
+      },
+      so: {
+        title: "SO (Showing a Result)",
+        meaning: "Jadi / Sehingga",
+        function: "Menunjukkan hasil, akibat, atau konsekuensi dari keadaan sebelumnya.",
+        icon: "➡️",
+        badgeClass: "badge-so",
+        examples: [
+          { en: "I was hungry, so I ate some rice.", id: "Saya lapar, jadi saya makan nasi." },
+          { en: "It was raining, so we stayed at home.", id: "Hari hujan, jadi kami tinggal di rumah." },
+          { en: "I forgot my umbrella, so I got wet.", id: "Saya lupa payung saya, sehingga saya kehujanan." }
+        ]
+      }
+    };
+
+    // Quick Practice Quiz Questions inside Meaning Lab
+    const meaningQuizQuestions = [
+      {
+        text: "Kata hubung mana yang digunakan untuk menunjukkan HASIL (Result) dari suatu kejadian?",
+        options: ["AND", "BUT", "SO"],
+        correct: 2,
+        explanation: "Benar! SO digunakan untuk menunjukkan akibat/hasil (Result)."
+      },
+      {
+        text: "Kata hubung mana yang digunakan saat kita menambahkan informasi yang sejalan?",
+        options: ["AND", "BUT", "SO"],
+        correct: 0,
+        explanation: "Tepat! AND menambahkan informasi setara (Addition)."
+      },
+      {
+        text: "Kata hubung mana yang tepat untuk menyatakan ide yang BERTENTANGAN (Contrast)?",
+        options: ["AND", "BUT", "SO"],
+        correct: 1,
+        explanation: "Hebat! BUT digunakan untuk menunjukkan kontras/pertentangan."
+      }
+    ];
+    let currentMeaningQuizIdx = 0;
+
+    const detectiveQuestions = [
+      {
+        sentA: "I like football.",
+        sentB: "I like badminton.",
+        correct: "addition",
+        connector: "and",
+        explanation: "Kedua ide ini menambahkan kesukaan yang sejalan (Addition). Maka kata hubung yang tepat adalah AND."
+      },
+      {
+        sentA: "It was raining heavily.",
+        sentB: "We stayed at home.",
+        correct: "result",
+        connector: "so",
+        explanation: "Tinggal di rumah adalah hasil/akibat dari hujan deras (Result). Maka kata hubung yang tepat adalah SO."
+      },
+      {
+        sentA: "She was very tired.",
+        sentB: "She continued working.",
+        correct: "contrast",
+        connector: "but",
+        explanation: "Tetap bekerja saat lelah menunjukkan pertentangan (Contrast). Maka kata hubung yang tepat adalah BUT."
+      },
+      {
+        sentA: "The laptop is expensive.",
+        sentB: "It is very fast and durable.",
+        correct: "contrast",
+        connector: "but",
+        explanation: "Harga mahal vs kualitas bagus merupakan pertentangan (Contrast)."
+      },
+      {
+        sentA: "I forgot my homework.",
+        sentB: "I apologized to the teacher.",
+        correct: "result",
+        connector: "so",
+        explanation: "Minta maaf adalah akibat dari lupa PR (Result)."
+      },
+      {
+        sentA: "My brother enjoys mathematics.",
+        sentB: "He loves science experiments.",
+        correct: "addition",
+        connector: "and",
+        explanation: "Menambahkan dua mata pelajaran favorit (Addition)."
+      },
+      {
+        sentA: "The weather was cold.",
+        sentB: "He wore a thick jacket.",
+        correct: "result",
+        connector: "so",
+        explanation: "Memakai jaket adalah hasil dari cuaca dingin (Result)."
+      },
+      {
+        sentA: "He practiced every day.",
+        sentB: "He did not win the trophy.",
+        correct: "contrast",
+        connector: "but",
+        explanation: "Sudah latihan tapi tidak menang menunjukkan pertentangan (Contrast)."
+      },
+      {
+        sentA: "Siti bought apples.",
+        sentB: "Siti bought oranges.",
+        correct: "addition",
+        connector: "and",
+        explanation: "Menambahkan buah yang dibeli (Addition)."
+      }
+    ];
+    let currentDetectiveIdx = 0;
+
+    const guidedPracticeL1 = [
+      { q: "I like fried rice ___ noodles.", options: ["and", "but", "so"], correct: "and" },
+      { q: "I was thirsty, ___ I drank some water.", options: ["and", "but", "so"], correct: "so" },
+      { q: "He is tired, ___ he keeps studying.", options: ["and", "but", "so"], correct: "but" },
+      { q: "It was late, ___ we went home.", options: ["and", "but", "so"], correct: "so" },
+      { q: "She is friendly, ___ she is sometimes shy.", options: ["and", "but", "so"], correct: "but" }
+    ];
+
+    const guidedPracticeL2 = [
+      { sentA: "I like cats.", sentB: "I like rabbits.", options: ["and", "but", "so"], correct: "and", merged: "I like cats and rabbits." },
+      { sentA: "It was raining.", sentB: "We stayed inside.", options: ["and", "but", "so"], correct: "so", merged: "It was raining, so we stayed inside." },
+      { sentA: "He is young.", sentB: "He is responsible.", options: ["and", "but", "so"], correct: "but", merged: "He is young, but he is responsible." },
+      { sentA: "I was hungry.", sentB: "I ate a sandwich.", options: ["and", "but", "so"], correct: "so", merged: "I was hungry, so I ate a sandwich." },
+      { sentA: "She likes reading.", sentB: "She likes drawing.", options: ["and", "but", "so"], correct: "and", merged: "She likes reading and drawing." }
+    ];
+
+    const guidedPracticeL3 = [
+      {
+        context: "I forgot my homework, ___ I could not show it to the teacher.",
+        options: ["and", "but", "so"],
+        correct: "so",
+        reason: "Lupa PR membuat siswa tidak bisa menunjukkannya ke guru (Sebab ➔ Akibat)."
+      },
+      {
+        context: "The soup was hot, ___ it was very delicious.",
+        options: ["and", "but", "so"],
+        correct: "but",
+        reason: "Sup panas tapi tetap enak menunjukkan pertentangan ringan (Contrast)."
+      },
+      {
+        context: "Rina studied hard for the test, ___ she passed with high marks.",
+        options: ["and", "but", "so"],
+        correct: "so",
+        reason: "Lulus dengan nilai tinggi adalah hasil dari belajar keras."
+      }
+    ];
+
+    const gameRushData = [
+      { q: "She went to the market ___ bought vegetables.", options: ["AND", "BUT", "SO"], correct: "AND" },
+      { q: "I wanted to play outside, ___ it started raining.", options: ["AND", "BUT", "SO"], correct: "BUT" },
+      { q: "The bus was full, ___ we decided to walk.", options: ["AND", "BUT", "SO"], correct: "SO" },
+      { q: "Budi is tall ___ handsome.", options: ["AND", "BUT", "SO"], correct: "AND" },
+      { q: "The task was difficult, ___ she solved it.", options: ["AND", "BUT", "SO"], correct: "BUT" },
+      { q: "He lost his pen, ___ he borrowed one from Edo.", options: ["AND", "BUT", "SO"], correct: "SO" },
+      { q: "We visited Bali ___ Lombok last year.", options: ["AND", "BUT", "SO"], correct: "AND" },
+      { q: "She loves singing, ___ she doesn't like dancing.", options: ["AND", "BUT", "SO"], correct: "BUT" },
+      { q: "The lights went out, ___ we lit candles.", options: ["AND", "BUT", "SO"], correct: "SO" },
+      { q: "English is fun ___ useful.", options: ["AND", "BUT", "SO"], correct: "AND" }
+    ];
+
+    const gameRescueData = [
+      { part1: "I was sleepy", part2: "I went to bed early.", options: ["and", "but", "so"], correct: "so" },
+      { part1: "He tried his best", part2: "he didn't break the record.", options: ["and", "but", "so"], correct: "but" },
+      { part1: "Siti loves tea", part2: "coffee.", options: ["and", "but", "so"], correct: "and" },
+      { part1: "The movie was long", part2: "it was very exciting.", options: ["and", "but", "so"], correct: "but" },
+      { part1: "It was a holiday", part2: "the school was closed.", options: ["and", "but", "so"], correct: "so" },
+      { part1: "We need flour", part2: "sugar for the cake.", options: ["and", "but", "so"], correct: "and" },
+      { part1: "The phone rang", part2: "nobody answered.", options: ["and", "but", "so"], correct: "but" },
+      { part1: "I felt sick", part2: "I went to see a doctor.", options: ["and", "but", "so"], correct: "so" }
+    ];
+
+    const gameTwoIdeasData = [
+      { ideaA: "I like English.", ideaB: "I like Mathematics.", target: "I like English and Mathematics.", word: "AND" },
+      { ideaA: "The bicycle is old.", ideaB: "It works perfectly.", target: "The bicycle is old, but it works perfectly.", word: "BUT" },
+      { ideaA: "I missed the morning alarm.", ideaB: "I arrived late.", target: "I missed the morning alarm, so I arrived late.", word: "SO" },
+      { ideaA: "He likes playing guitar.", ideaB: "He likes singing.", target: "He likes playing guitar and singing.", word: "AND" },
+      { ideaA: "She was hungry.", ideaB: "She bought a burger.", target: "She was hungry, so she bought a burger.", word: "SO" }
+    ];
+
+    const finalAssessmentQuestions = [
+      {
+        type: "choose",
+        question: "I like apples ___ bananas.",
+        options: ["and", "but", "so"],
+        correct: "and",
+        explanation: "AND menambahkan buah favorit setara."
+      },
+      {
+        type: "choose",
+        question: "It was hot outside, ___ we went swimming.",
+        options: ["and", "but", "so"],
+        correct: "so",
+        explanation: "Berenang adalah akibat dari cuaca panas."
+      },
+      {
+        type: "choose",
+        question: "He ran fast, ___ he missed the bus.",
+        options: ["and", "but", "so"],
+        correct: "but",
+        explanation: "Lari cepat tapi tetap ketinggalan bus menunjukkan pertentangan."
+      },
+      {
+        type: "choose",
+        question: "She studied hard, ___ she passed the exam.",
+        options: ["and", "but", "so"],
+        correct: "so",
+        explanation: "Lulus ujian adalah hasil dari belajar keras."
+      },
+      {
+        type: "combine",
+        question: "Combine: 'I like cats.' + 'I like rabbits.'",
+        options: ["I like cats and rabbits.", "I like cats but rabbits.", "I like cats so rabbits."],
+        correct: 0,
+        explanation: "AND menggabungkan dua hal yang disukai."
+      },
+      {
+        type: "combine",
+        question: "Combine: 'It was raining.' + 'We stayed inside.'",
+        options: ["It was raining, but we stayed inside.", "It was raining, so we stayed inside.", "It was raining and we stayed inside."],
+        correct: 1,
+        explanation: "SO menyatakan hasil dari situasi hujan."
+      },
+      {
+        type: "combine",
+        question: "Combine: 'He is young.' + 'He is responsible.'",
+        options: ["He is young, so he is responsible.", "He is young and he is responsible.", "He is young, but he is responsible."],
+        correct: 2,
+        explanation: "Muda tapi bertanggung jawab menunjukkan pertentangan."
+      },
+      {
+        type: "best",
+        question: "Select the best connection: 'I forgot my homework, ___ I could not show it.'",
+        options: ["and", "but", "so"],
+        correct: "so",
+        explanation: "SO tepat untuk menunjukkan akibat lupa PR."
+      },
+      {
+        type: "best",
+        question: "Select the best connection: 'She is tired, ___ she continues studying.'",
+        options: ["and", "but", "so"],
+        correct: "but",
+        explanation: "Lelah tapi tetap belajar menunjukkan kontras."
+      },
+      {
+        type: "best",
+        question: "Select the best connection: 'She is friendly, ___ she is sometimes shy.'",
+        options: ["and", "but", "so"],
+        correct: "but",
+        explanation: "Ramah tapi kadang pemalu menunjukkan pertentangan."
+      }
+    ];
+    let currentFinalIdx = 0;
+    let finalUserAnswers = {};
+
+    // Screen Navigation Controller
+    function navigateTo(screenId) {
+      const targetIndex = screens.indexOf(screenId);
+      if (targetIndex !== -1) {
+        currentScreenIndex = targetIndex;
+      }
+
+      document.querySelectorAll('.screen-view').forEach(el => el.classList.add('hidden'));
+      const targetEl = document.getElementById(`screen-${screenId}`);
+      if (targetEl) {
+        targetEl.classList.remove('hidden');
+      }
+
+      // Update Active Navigation Highlight
+      document.querySelectorAll('.nav-dot').forEach((btn, idx) => {
+        if (idx === currentScreenIndex) {
+          btn.classList.add('bg-blue-600', 'text-white');
+          btn.classList.remove('text-slate-600', 'hover:bg-slate-100');
+        } else {
+          btn.classList.remove('bg-blue-600', 'text-white');
+          btn.classList.add('text-slate-600', 'hover:bg-slate-100');
+        }
+      });
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function navigateStep(direction) {
+      let newIdx = currentScreenIndex + direction;
+      if (newIdx < 0) newIdx = 0;
+      if (newIdx >= screens.length) newIdx = screens.length - 1;
+      navigateTo(screens[newIdx]);
+    }
+
+    function saveStudentProfile() {
+      const nameInput = document.getElementById('input-student-name').value.trim();
+      const classInput = document.getElementById('input-student-class').value.trim();
+
+      if (nameInput) studentData.name = nameInput;
+      if (classInput) studentData.class = classInput;
+
+      document.getElementById('nav-student-name').innerText = studentData.name;
+      document.getElementById('nav-student-class').innerText = studentData.class;
+
+      localStorage.setItem('linkit_student_data', JSON.stringify(studentData));
+      alert('✓ Student Profile Saved Successfully!');
+    }
+
+    function switchMeaningTab(wordKey) {
+      ['and', 'but', 'so'].forEach(w => {
+        const btn = document.getElementById(`tab-btn-${w}`);
+        if (w === wordKey) {
+          btn.className = "px-5 py-2.5 rounded-xl font-bold text-sm bg-blue-600 text-white shadow-md transition";
+        } else {
+          btn.className = "px-5 py-2.5 rounded-xl font-bold text-sm bg-slate-200 text-slate-700 hover:bg-slate-300 transition";
+        }
+      });
+
+      const data = meaningData[wordKey];
+      const container = document.getElementById('tab-content-meaning');
+
+      let examplesHtml = data.examples.map(ex => `
+        <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+          <p class="font-bold text-slate-800 text-sm">"${ex.en}"</p>
+          <p class="text-xs text-slate-500">Terjemahan: <i>${ex.id}</i></p>
+        </div>
+      `).join('');
+
+      container.innerHTML = `
+        <div class="space-y-4">
+          <div class="flex items-center space-x-3">
+            <span class="text-3xl">${data.icon}</span>
+            <div>
+              <span class="px-3 py-1 rounded-full text-xs font-extrabold ${data.badgeClass}">${wordKey.toUpperCase()}</span>
+              <h3 class="text-xl font-black text-slate-800 mt-1">${data.title}</h3>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+            <div class="bg-blue-50/60 border border-blue-100 p-4 rounded-xl">
+              <span class="text-xs font-bold text-blue-700 block mb-1">Arti Dalam Bahasa Indonesia:</span>
+              <p class="text-base font-extrabold text-slate-800">"${data.meaning}"</p>
+            </div>
+            <div class="bg-indigo-50/60 border border-indigo-100 p-4 rounded-xl">
+              <span class="text-xs font-bold text-indigo-700 block mb-1">Fungsi Gramatikal:</span>
+              <p class="text-xs text-slate-700">${data.function}</p>
+            </div>
+          </div>
+
+          <div>
+            <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wider mb-2">Contoh Kalimat (Sentence Examples):</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              ${examplesHtml}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderMeaningQuiz() {
+      const q = meaningQuizQuestions[currentMeaningQuizIdx];
+      document.getElementById('meaning-quiz-question').innerText = `[Soal ${currentMeaningQuizIdx + 1}/${meaningQuizQuestions.length}] ${q.text}`;
+
+      const optionsBox = document.getElementById('meaning-quiz-options');
+      optionsBox.innerHTML = q.options.map((opt, idx) => `
+        <button onclick="checkMeaningQuizAnswer(${idx})" class="p-3 bg-slate-700 hover:bg-slate-600 text-white font-bold text-xs rounded-xl border border-slate-600 transition btn-bounce">
+          ${opt}
+        </button>
+      `).join('');
+
+      document.getElementById('meaning-quiz-feedback').className = "hidden p-3 rounded-xl text-xs font-semibold";
+    }
+
+    function checkMeaningQuizAnswer(optIdx) {
+      const q = meaningQuizQuestions[currentMeaningQuizIdx];
+      const feedback = document.getElementById('meaning-quiz-feedback');
+      feedback.classList.remove('hidden');
+
+      if (optIdx === q.correct) {
+        feedback.className = "p-3 rounded-xl text-xs font-semibold bg-emerald-900/80 text-emerald-200 border border-emerald-700";
+        feedback.innerHTML = `✓ ${q.explanation} <button onclick="nextMeaningQuiz()" class="ml-2 underline font-bold">Soal Berikutnya ➔</button>`;
+      } else {
+        feedback.className = "p-3 rounded-xl text-xs font-semibold bg-red-900/80 text-red-200 border border-red-700";
+        feedback.innerHTML = `❌ Kurang tepat. Petunjuk: Perhatikan lagi apakah kalimat ini menambahkan ide, membuat kontras, atau menyatakan akibat! Silakan coba lagi.`;
+      }
+    }
+
+    function nextMeaningQuiz() {
+      currentMeaningQuizIdx = (currentMeaningQuizIdx + 1) % meaningQuizQuestions.length;
+      renderMeaningQuiz();
+    }
+
+    function renderDetectiveQuestion() {
+      const q = detectiveQuestions[currentDetectiveIdx];
+      document.getElementById('gd-sentence-a').innerText = `"${q.sentA}"`;
+      document.getElementById('gd-sentence-b').innerText = `"${q.sentB}"`;
+      document.getElementById('gd-progress').innerText = `${currentDetectiveIdx + 1} / ${detectiveQuestions.length}`;
+
+      document.getElementById('gd-feedback-box').className = "hidden p-4 rounded-xl border text-xs sm:text-sm leading-relaxed space-y-2";
+      
+      // Reset button highlights
+      ['addition', 'contrast', 'result'].forEach(type => {
+        const btn = document.getElementById(`gd-btn-${type}`);
+        btn.classList.remove('ring-4', 'ring-blue-400', 'ring-amber-400', 'ring-emerald-400');
+      });
+    }
+
+    function checkDetectiveAnswer(userChoice) {
+      const q = detectiveQuestions[currentDetectiveIdx];
+      const feedback = document.getElementById('gd-feedback-box');
+      feedback.classList.remove('hidden');
+
+      if (userChoice === q.correct) {
+        feedback.className = "p-4 rounded-xl border border-emerald-300 bg-emerald-50 text-emerald-900 space-y-1 block";
+        feedback.innerHTML = `
+          <span class="font-extrabold text-emerald-700 block text-sm">✓ EXCELLENT DETECTIVE WORK!</span>
+          <p>${q.explanation}</p>
+          <div class="mt-2 p-2 bg-white/80 rounded-lg font-mono text-xs">
+            <b>Kalimat Lengkap:</b> "${q.sentA} <span class="text-blue-600 uppercase font-black">${q.connector}</span> ${q.sentB.toLowerCase()}"
+          </div>
+        `;
+      } else {
+        feedback.className = "p-4 rounded-xl border border-amber-300 bg-amber-50 text-amber-900 space-y-1 block";
+        feedback.innerHTML = `
+          <span class="font-bold text-amber-800 block">⚠️ Periksa Kembali Hubungan Makna!</span>
+          <p>Pilihanmu belum tepat. Pikirkan lagi: Apakah kalimat kedua merupakan akibat dari kalimat pertama, pertentangan, atau sekadar penambahan?</p>
+        `;
+      }
+    }
+
+    function nextDetectiveQuestion() {
+      if (currentDetectiveIdx < detectiveQuestions.length - 1) {
+        currentDetectiveIdx++;
+        renderDetectiveQuestion();
+      }
+    }
+
+    function prevDetectiveQuestion() {
+      if (currentDetectiveIdx > 0) {
+        currentDetectiveIdx--;
+        renderDetectiveQuestion();
+      }
+    }
+
+    let activeGuidedLevel = 1;
+
+    function switchGuidedLevel(levelNum) {
+      activeGuidedLevel = levelNum;
+      [1, 2, 3].forEach(lvl => {
+        const btn = document.getElementById(`guided-tab-${lvl}`);
+        if (lvl === levelNum) {
+          btn.className = "py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm bg-blue-600 text-white shadow-sm transition";
+        } else {
+          btn.className = "py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm bg-slate-200 text-slate-700 hover:bg-slate-300 transition";
+        }
+      });
+
+      renderGuidedPractice();
+    }
+
+    function renderGuidedPractice() {
+      const container = document.getElementById('guided-practice-content');
+
+      if (activeGuidedLevel === 1) {
+        let itemsHtml = guidedPracticeL1.map((item, idx) => `
+          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+            <p class="font-bold text-slate-800 text-sm">${idx + 1}. ${item.q.replace('___', '<span class="px-2 py-0.5 bg-yellow-200 rounded text-slate-800 font-mono">___</span>')}</p>
+            <div class="flex gap-2 pt-1">
+              ${item.options.map(opt => `
+                <button onclick="checkGuidedL1(${idx}, '${opt}')" class="px-3 py-1 bg-white border border-slate-300 hover:bg-blue-50 hover:border-blue-400 font-bold text-xs rounded-lg transition">
+                  ${opt.toUpperCase()}
+                </button>
+              `).join('')}
+            </div>
+            <div id="guided-l1-feedback-${idx}" class="text-xs font-semibold hidden"></div>
+          </div>
+        `).join('');
+
+        container.innerHTML = `
+          <div class="space-y-4">
+            <h3 class="font-bold text-slate-800 text-base">Level 1: Choose the Correct Word</h3>
+            <p class="text-xs text-slate-500">Pilih kata hubung AND, BUT, atau SO yang paling pas untuk melengkapi kalimat.</p>
+            <div class="space-y-3">${itemsHtml}</div>
+          </div>
+        `;
+      } else if (activeGuidedLevel === 2) {
+        let itemsHtml = guidedPracticeL2.map((item, idx) => `
+          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+            <div class="text-xs font-semibold text-slate-700 space-y-1">
+              <p>Kalimat 1: <b>"${item.sentA}"</b></p>
+              <p>Kalimat 2: <b>"${item.sentB}"</b></p>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-bold text-slate-500">Pilih Kata Hubung:</span>
+              ${item.options.map(opt => `
+                <button onclick="checkGuidedL2(${idx}, '${opt}')" class="px-3 py-1 bg-white border border-slate-300 hover:bg-blue-50 hover:border-blue-400 font-bold text-xs rounded-lg transition">
+                  ${opt.toUpperCase()}
+                </button>
+              `).join('')}
+            </div>
+            <div id="guided-l2-feedback-${idx}" class="text-xs font-semibold hidden"></div>
+          </div>
+        `).join('');
+
+        container.innerHTML = `
+          <div class="space-y-4">
+            <h3 class="font-bold text-slate-800 text-base">Level 2: Connect the Sentences</h3>
+            <p class="text-xs text-slate-500">Gabungkan dua kalimat terpisah menjadi satu kalimat yang padu.</p>
+            <div class="space-y-3">${itemsHtml}</div>
+          </div>
+        `;
+      } else if (activeGuidedLevel === 3) {
+        let itemsHtml = guidedPracticeL3.map((item, idx) => `
+          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+            <p class="font-bold text-slate-800 text-sm">"${item.context}"</p>
+            <div class="flex gap-2">
+              ${item.options.map(opt => `
+                <button onclick="checkGuidedL3(${idx}, '${opt}')" class="px-4 py-1.5 bg-white border border-slate-300 hover:bg-blue-50 hover:border-blue-400 font-bold text-xs rounded-lg transition">
+                  ${opt.toUpperCase()}
+                </button>
+              `).join('')}
+            </div>
+            <div id="guided-l3-feedback-${idx}" class="text-xs font-semibold hidden"></div>
+          </div>
+        `).join('');
+
+        container.innerHTML = `
+          <div class="space-y-4">
+            <h3 class="font-bold text-slate-800 text-base">Level 3: Find the Best Connection</h3>
+            <p class="text-xs text-slate-500">Pilih kata hubung terbaik berdasarkan konteks kalimat dan makna terdalamnya.</p>
+            <div class="space-y-3">${itemsHtml}</div>
+          </div>
+        `;
+      }
+    }
+
+    function checkGuidedL1(idx, chosen) {
+      const item = guidedPracticeL1[idx];
+      const fb = document.getElementById(`guided-l1-feedback-${idx}`);
+      fb.classList.remove('hidden');
+      if (chosen === item.correct) {
+        fb.className = "text-xs font-bold text-emerald-600 mt-1";
+        fb.innerText = `✓ Correct! "${item.correct.toUpperCase()}" is the right connector.`;
+      } else {
+        fb.className = "text-xs font-bold text-red-600 mt-1";
+        fb.innerText = `❌ Try again! Think about whether this is addition, contrast, or result.`;
+      }
+    }
+
+    function checkGuidedL2(idx, chosen) {
+      const item = guidedPracticeL2[idx];
+      const fb = document.getElementById(`guided-l2-feedback-${idx}`);
+      fb.classList.remove('hidden');
+      if (chosen === item.correct) {
+        fb.className = "text-xs font-bold text-emerald-700 bg-emerald-50 p-2 rounded-lg border border-emerald-200 mt-1";
+        fb.innerHTML = `✓ Great Job! Joined sentence: <b>"${item.merged}"</b>`;
+      } else {
+        fb.className = "text-xs font-bold text-red-600 mt-1";
+        fb.innerText = `❌ Not quite right. Re-check the connection between the two ideas.`;
+      }
+    }
+
+    function checkGuidedL3(idx, chosen) {
+      const item = guidedPracticeL3[idx];
+      const fb = document.getElementById(`guided-l3-feedback-${idx}`);
+      fb.classList.remove('hidden');
+      if (chosen === item.correct) {
+        fb.className = "text-xs font-bold text-emerald-700 bg-emerald-50 p-2 rounded-lg border border-emerald-200 mt-1";
+        fb.innerHTML = `✓ Correct! ${item.reason}`;
+      } else {
+        fb.className = "text-xs font-bold text-red-600 mt-1";
+        fb.innerText = `❌ Incorrect option. Try analyzing the situation again!`;
+      }
+    }
+
+    let currentGameType = '';
+    let gameScore = 0;
+    let gameIndex = 0;
+
+    function launchGame(gameType) {
+      currentGameType = gameType;
+      gameScore = 0;
+      gameIndex = 0;
+
+      const arena = document.getElementById('game-arena');
+      arena.classList.remove('hidden');
+      window.scrollTo({ top: arena.offsetTop - 80, behavior: 'smooth' });
+
+      renderGameStep();
+    }
+
+    function renderGameStep() {
+      const arena = document.getElementById('game-arena');
+
+      if (currentGameType === 'rush') {
+        if (gameIndex >= gameRushData.length) {
+          arena.innerHTML = `
+            <div class="text-center space-y-4 py-6">
+              <span class="text-5xl">🎉</span>
+              <h3 class="text-2xl font-black text-slate-800">Game Rush Completed!</h3>
+              <p class="text-lg font-bold text-blue-600">Your Final Game Score: ${gameScore} / 100</p>
+              <button onclick="launchGame('rush')" class="px-6 py-2.5 bg-blue-600 text-white font-bold text-xs rounded-xl shadow btn-bounce">Play Game Rush Again 🔄</button>
+            </div>
+          `;
+          return;
+        }
+
+        const q = gameRushData[gameIndex];
+        arena.innerHTML = `
+          <div class="space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-2">
+              <span class="text-xs font-bold text-blue-600">Game A: Linking Word Rush</span>
+              <span class="text-xs font-bold bg-amber-100 text-amber-800 px-2.5 py-1 rounded-full">Score: ${gameScore} pts</span>
+            </div>
+            <p class="text-xs text-slate-400">Question ${gameIndex + 1} of ${gameRushData.length}</p>
+
+            <div class="p-6 bg-slate-50 rounded-2xl border border-slate-200 text-center">
+              <p class="text-lg font-extrabold text-slate-800">"${q.q}"</p>
+            </div>
+
+            <div class="grid grid-cols-3 gap-3">
+              ${q.options.map(opt => `
+                <button onclick="submitRushAnswer('${opt}')" class="py-3 bg-blue-600 hover:bg-blue-700 text-white font-black text-sm rounded-xl shadow transition btn-bounce">
+                  ${opt}
+                </button>
+              `).join('')}
+            </div>
+            <div id="game-rush-feedback" class="text-xs font-semibold hidden"></div>
+          </div>
+        `;
+      } else if (currentGameType === 'rescue') {
+        if (gameIndex >= gameRescueData.length) {
+          arena.innerHTML = `
+            <div class="text-center space-y-4 py-6">
+              <span class="text-5xl">🏆</span>
+              <h3 class="text-2xl font-black text-slate-800">Sentence Rescue Completed!</h3>
+              <p class="text-lg font-bold text-amber-600">You Rescued All Sentences!</p>
+              <button onclick="launchGame('rescue')" class="px-6 py-2.5 bg-amber-600 text-white font-bold text-xs rounded-xl shadow btn-bounce">Play Rescue Again 🔄</button>
+            </div>
+          `;
+          return;
+        }
+
+        const q = gameRescueData[gameIndex];
+        arena.innerHTML = `
+          <div class="space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-2">
+              <span class="text-xs font-bold text-amber-600">Game B: Sentence Rescue</span>
+              <span class="text-xs text-slate-400">Challenge ${gameIndex + 1} / ${gameRescueData.length}</span>
+            </div>
+
+            <div class="p-6 bg-amber-50 rounded-2xl border border-amber-200 text-center space-y-2">
+              <span class="text-xs font-bold text-amber-800 uppercase">Connect These Sentence Parts:</span>
+              <p class="text-base font-bold text-slate-800">"${q.part1} <span class="px-2 py-0.5 bg-amber-200 rounded text-amber-900">[ ? ]</span> ${q.part2}"</p>
+            </div>
+
+            <div class="grid grid-cols-3 gap-3">
+              ${q.options.map(opt => `
+                <button onclick="submitRescueAnswer('${opt}')" class="py-3 bg-amber-500 hover:bg-amber-600 text-white font-black text-sm rounded-xl shadow transition btn-bounce">
+                  ${opt.toUpperCase()}
+                </button>
+              `).join('')}
+            </div>
+            <div id="game-rescue-feedback" class="text-xs font-semibold hidden"></div>
+          </div>
+        `;
+      } else if (currentGameType === 'twoideas') {
+        if (gameIndex >= gameTwoIdeasData.length) {
+          arena.innerHTML = `
+            <div class="text-center space-y-4 py-6">
+              <span class="text-5xl">🌟</span>
+              <h3 class="text-2xl font-black text-slate-800">Two Ideas Challenge Completed!</h3>
+              <button onclick="launchGame('twoideas')" class="px-6 py-2.5 bg-emerald-600 text-white font-bold text-xs rounded-xl shadow btn-bounce">Play Challenge Again 🔄</button>
+            </div>
+          `;
+          return;
+        }
+
+        const q = gameTwoIdeasData[gameIndex];
+        arena.innerHTML = `
+          <div class="space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-2">
+              <span class="text-xs font-bold text-emerald-600">Game C: Two Ideas, One Sentence</span>
+              <span class="text-xs text-slate-400">Task ${gameIndex + 1} / ${gameTwoIdeasData.length}</span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-700">Idea 1: "${q.ideaA}"</div>
+              <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-700">Idea 2: "${q.ideaB}"</div>
+            </div>
+
+            <div class="p-4 bg-emerald-50 rounded-xl border border-emerald-200 text-xs font-bold text-emerald-900 space-y-2">
+              <p>Target Connector: <span class="px-2 py-0.5 bg-emerald-200 text-emerald-800 rounded font-black">${q.word}</span></p>
+              <p class="text-slate-700 font-normal">Select the merged sentence:</p>
+            </div>
+
+            <div class="space-y-2">
+              <button onclick="submitTwoIdeasAnswer(true)" class="w-full text-left p-3 bg-white border border-slate-300 hover:border-emerald-500 rounded-xl font-bold text-xs transition">
+                ✓ "${q.target}"
+              </button>
+              <button onclick="submitTwoIdeasAnswer(false)" class="w-full text-left p-3 bg-white border border-slate-300 hover:border-red-400 rounded-xl font-bold text-xs transition">
+                ✗ "${q.ideaA} because ${q.ideaB}"
+              </button>
+            </div>
+            <div id="game-twoideas-feedback" class="text-xs font-semibold hidden"></div>
+          </div>
+        `;
+      }
+    }
+
+    function submitRushAnswer(chosen) {
+      const q = gameRushData[gameIndex];
+      const fb = document.getElementById('game-rush-feedback');
+      fb.classList.remove('hidden');
+
+      if (chosen === q.correct) {
+        gameScore += 10;
+        fb.className = "p-3 bg-emerald-50 text-emerald-800 rounded-xl font-bold text-xs block";
+        fb.innerHTML = `✓ Correct (+10 pts)! Moving to next question...`;
+        setTimeout(() => {
+          gameIndex++;
+          renderGameStep();
+        }, 1000);
+      } else {
+        fb.className = "p-3 bg-red-50 text-red-800 rounded-xl font-bold text-xs block";
+        fb.innerHTML = `❌ Wrong choice! Correct connector was ${q.correct}.`;
+        setTimeout(() => {
+          gameIndex++;
+          renderGameStep();
+        }, 1400);
+      }
+    }
+
+    function submitRescueAnswer(chosen) {
+      const q = gameRescueData[gameIndex];
+      const fb = document.getElementById('game-rescue-feedback');
+      fb.classList.remove('hidden');
+
+      if (chosen === q.correct) {
+        fb.className = "p-3 bg-emerald-50 text-emerald-800 rounded-xl font-bold text-xs block";
+        fb.innerHTML = `✓ Rescued! "${q.part1} ${q.correct} ${q.part2}"`;
+        setTimeout(() => {
+          gameIndex++;
+          renderGameStep();
+        }, 1200);
+      } else {
+        fb.className = "p-3 bg-amber-50 text-amber-800 rounded-xl font-bold text-xs block";
+        fb.innerHTML = `⚠️ Try again. Correct connector is '${q.correct}'.`;
+        setTimeout(() => {
+          gameIndex++;
+          renderGameStep();
+        }, 1400);
+      }
+    }
+
+    function submitTwoIdeasAnswer(isCorrect) {
+      const fb = document.getElementById('game-twoideas-feedback');
+      fb.classList.remove('hidden');
+
+      if (isCorrect) {
+        fb.className = "p-3 bg-emerald-50 text-emerald-800 rounded-xl font-bold text-xs block";
+        fb.innerHTML = `✓ Tepat sekali! Kalimat berhasil digabungkan dengan baik.`;
+        setTimeout(() => {
+          gameIndex++;
+          renderGameStep();
+        }, 1200);
+      } else {
+        fb.className = "p-3 bg-red-50 text-red-800 rounded-xl font-bold text-xs block";
+        fb.innerHTML = `❌ Kurang tepat. Pilih kalimat yang menggunakan kata hubung target.`;
+      }
+    }
+
+    function checkBuilderModeA() {
+      const a1 = document.getElementById('builder-a1').value.trim();
+      const a2 = document.getElementById('builder-a2').value.trim();
+      const b1 = document.getElementById('builder-b1').value.trim();
+      const c1 = document.getElementById('builder-c1').value.trim();
+
+      const fb = document.getElementById('builder-feedback-a');
+      fb.classList.remove('hidden');
+
+      if (a1 && a2 && b1 && c1) {
+        fb.className = "p-3 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-900 border border-emerald-200";
+        fb.innerHTML = `
+          ✓ <b>Great Template Practice!</b> All template blanks filled successfully.
+          <ul class="list-disc pl-4 mt-1 space-y-0.5">
+            <li>1: I like ${a1} <b>and</b> ${a2}.</li>
+            <li>2: I wanted to buy a shirt, <b>but</b> ${b1}.</li>
+            <li>3: I was very sleepy, <b>so</b> ${c1}.</li>
+          </ul>
+        `;
+      } else {
+        fb.className = "p-3 rounded-xl text-xs font-semibold bg-amber-50 text-amber-900 border border-amber-200";
+        fb.innerText = "⚠️ Please fill in all blank fields in Mode A before checking!";
+      }
+    }
+
+    function checkBuilderModeB() {
+      const ownAnd = document.getElementById('own-and-input').value.trim().toLowerCase();
+      const ownBut = document.getElementById('own-but-input').value.trim().toLowerCase();
+      const ownSo = document.getElementById('own-so-input').value.trim().toLowerCase();
+
+      const fb = document.getElementById('builder-feedback-b');
+      fb.classList.remove('hidden');
+
+      let validAnd = ownAnd.includes('and');
+      let validBut = ownBut.includes('but');
+      let validSo = ownSo.includes('so');
+
+      if (validAnd && validBut && validSo) {
+        fb.className = "p-3 rounded-xl text-xs space-y-1 bg-amber-50 text-amber-900 border border-amber-200";
+        fb.innerHTML = `
+          <span class="font-bold text-amber-800 block">📌 Needs Teacher Review (Status Validasi Otomatis):</span>
+          <p>Kata hubung dasar (<i>and, but, so</i>) terdeteksi di setiap kalimatmu. Namun, kesesuaian makna kalimat akan diperiksa langsung oleh Guru Bahasa Inggris-mu!</p>
+          <div class="mt-2 p-2 bg-white rounded-lg border border-amber-200">
+            <b>Contoh Kalimat Ideal Reference:</b>
+            <ul class="list-disc pl-4 mt-1 text-[11px] text-slate-600">
+              <li>"I study English and science at school."</li>
+              <li>"I am tired, but I still do my homework."</li>
+              <li>"It was cold outside, so I wore my jacket."</li>
+            </ul>
+          </div>
+        `;
+      } else {
+        fb.className = "p-3 rounded-xl text-xs font-semibold bg-red-50 text-red-900 border border-red-200";
+        fb.innerText = "⚠️ Pastikan setiap kalimat yang kamu tulis memuat kata hubung target (AND untuk kalimat 1, BUT untuk kalimat 2, dan SO untuk kalimat 3)!";
+      }
+    }
+
+    function setAssessmentMode(mode) {
+      assessmentMode = mode;
+      const btnP = document.getElementById('mode-btn-practice');
+      const btnA = document.getElementById('mode-btn-assessment');
+
+      if (mode === 'practice') {
+        btnP.className = "w-1/2 py-2 rounded-lg bg-white shadow-sm text-blue-600 transition font-bold";
+        btnA.className = "w-1/2 py-2 rounded-lg text-slate-600 transition font-bold";
+      } else {
+        btnA.className = "w-1/2 py-2 rounded-lg bg-white shadow-sm text-blue-600 transition font-bold";
+        btnP.className = "w-1/2 py-2 rounded-lg text-slate-600 transition font-bold";
+      }
+
+      renderFinalQuestion();
+    }
+
+    function renderFinalQuestion() {
+      const q = finalAssessmentQuestions[currentFinalIdx];
+      document.getElementById('final-progress').innerText = `Question ${currentFinalIdx + 1} / ${finalAssessmentQuestions.length}`;
+      document.getElementById('final-progress-bar').style.width = `${((currentFinalIdx + 1) / finalAssessmentQuestions.length) * 100}%`;
+
+      const box = document.getElementById('final-question-box');
+      const savedAnswer = finalUserAnswers[currentFinalIdx];
+
+      let optionsHtml = '';
+
+      if (q.type === 'choose' || q.type === 'best') {
+        optionsHtml = q.options.map((opt, oIdx) => `
+          <button onclick="selectFinalAnswer('${opt}')" class="w-full text-left p-3.5 rounded-xl border-2 ${savedAnswer === opt ? 'border-blue-600 bg-blue-50 text-blue-900' : 'border-slate-200 hover:border-slate-300 bg-white'} font-bold text-xs sm:text-sm transition flex justify-between items-center">
+            <span>${opt.toUpperCase()}</span>
+            ${savedAnswer === opt ? '<span class="text-blue-600">✓ Selected</span>' : ''}
+          </button>
+        `).join('');
+      } else if (q.type === 'combine') {
+        optionsHtml = q.options.map((opt, oIdx) => `
+          <button onclick="selectFinalAnswer(${oIdx})" class="w-full text-left p-3.5 rounded-xl border-2 ${savedAnswer === oIdx ? 'border-blue-600 bg-blue-50 text-blue-900' : 'border-slate-200 hover:border-slate-300 bg-white'} font-bold text-xs sm:text-sm transition flex justify-between items-center">
+            <span>${opt}</span>
+            ${savedAnswer === oIdx ? '<span class="text-blue-600">✓ Selected</span>' : ''}
+          </button>
+        `).join('');
+      }
+
+      box.innerHTML = `
+        <div class="space-y-3">
+          <span class="px-2.5 py-1 rounded text-xs font-bold uppercase ${q.type === 'choose' ? 'bg-blue-100 text-blue-800' : q.type === 'combine' ? 'bg-purple-100 text-purple-800' : 'bg-amber-100 text-amber-800'}">
+            Type: ${q.type.toUpperCase()}
+          </span>
+          <h3 class="text-base sm:text-lg font-extrabold text-slate-800">${q.question}</h3>
+          <div class="space-y-2 pt-2">${optionsHtml}</div>
+        </div>
+      `;
+
+      // Assessment navigation buttons
+      document.getElementById('final-prev-btn').disabled = (currentFinalIdx === 0);
+
+      if (currentFinalIdx === finalAssessmentQuestions.length - 1) {
+        document.getElementById('final-next-btn').classList.add('hidden');
+        document.getElementById('final-submit-btn').classList.remove('hidden');
+      } else {
+        document.getElementById('final-next-btn').classList.remove('hidden');
+        document.getElementById('final-submit-btn').classList.add('hidden');
+      }
+
+      // Hide practice feedback initially
+      document.getElementById('final-feedback-box').className = "hidden p-4 rounded-xl text-xs sm:text-sm font-medium";
+    }
+
+    function selectFinalAnswer(val) {
+      finalUserAnswers[currentFinalIdx] = val;
+      renderFinalQuestion();
+
+      if (assessmentMode === 'practice') {
+        const q = finalAssessmentQuestions[currentFinalIdx];
+        const fb = document.getElementById('final-feedback-box');
+        fb.classList.remove('hidden');
+
+        let isCorrect = (val === q.correct);
+        if (isCorrect) {
+          fb.className = "p-4 rounded-xl bg-emerald-50 text-emerald-900 border border-emerald-200 block";
+          fb.innerHTML = `✓ <b>Correct!</b> ${q.explanation}`;
+        } else {
+          fb.className = "p-4 rounded-xl bg-red-50 text-red-900 border border-red-200 block";
+          fb.innerHTML = `❌ <b>Incorrect choice.</b> ${q.explanation}`;
+        }
+      }
+    }
+
+    function nextFinalQuestion() {
+      if (currentFinalIdx < finalAssessmentQuestions.length - 1) {
+        currentFinalIdx++;
+        renderFinalQuestion();
+      }
+    }
+
+    function prevFinalQuestion() {
+      if (currentFinalIdx > 0) {
+        currentFinalIdx--;
+        renderFinalQuestion();
+      }
+    }
+
+    function confirmSubmitAssessment() {
+      const answeredCount = Object.keys(finalUserAnswers).length;
+      if (answeredCount < finalAssessmentQuestions.length) {
+        if (!confirm(`You have only answered ${answeredCount} of 10 questions. Are you sure you want to submit?`)) {
+          return;
+        }
+      } else {
+        if (!confirm("Are you ready to submit your Final Assessment and view your report?")) {
+          return;
+        }
+      }
+
+      calculateAndShowReport();
+    }
+
+    function calculateAndShowReport() {
+      let correctCount = 0;
+      finalAssessmentQuestions.forEach((q, idx) => {
+        if (finalUserAnswers[idx] === q.correct) {
+          correctCount++;
+        }
+      });
+
+      const totalQs = finalAssessmentQuestions.length;
+      const finalScore = Math.round((correctCount / totalQs) * 100);
+
+      // Populate Certificate Data
+      document.getElementById('report-name').innerText = studentData.name || "Budi Santoso";
+      document.getElementById('report-class').innerText = studentData.class || "VIII G";
+      document.getElementById('report-date').innerText = new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
+      document.getElementById('report-score').innerText = finalScore;
+      document.getElementById('report-correct').innerText = `${correctCount} / ${totalQs}`;
+      document.getElementById('report-percentage').innerText = `${finalScore}%`;
+
+      // Interpretation Text
+      const interp = document.getElementById('report-interpretation');
+      const summaryBox = document.getElementById('report-summary-box');
+
+      if (finalScore >= 90) {
+        interp.innerText = "Excellent! You understand how to connect ideas brilliantly.";
+        interp.className = "text-xs font-bold text-emerald-700 mt-1";
+        summaryBox.innerHTML = `
+          <p class="font-bold text-emerald-800">🎉 Outstanding Achievement!</p>
+          <p>Siswa telah menguasai seluruh konsep penggunaan <b>AND, BUT, dan SO</b> secara menyeluruh baik dari segi penambahan, pertentangan, maupun hubungan sebab-akibat.</p>
+        `;
+      } else if (finalScore >= 75) {
+        interp.innerText = "Good job! Keep practising to reach perfection.";
+        interp.className = "text-xs font-bold text-blue-700 mt-1";
+        summaryBox.innerHTML = `
+          <p class="font-bold text-blue-800">👍 Hasil Baik!</p>
+          <p>Siswa telah memahami sebagian besar fungsi kata hubung. Disarankan untuk meninjau kembali beberapa soal penggabungan kalimat.</p>
+        `;
+      } else if (finalScore >= 60) {
+        interp.innerText = "Getting there! Review the examples and try again.";
+        interp.className = "text-xs font-bold text-amber-700 mt-1";
+        summaryBox.innerHTML = `
+          <p class="font-bold text-amber-800">⚠️ Cukup Baik, Membutuhkan Sedikit Penguatan.</p>
+          <p>Arahkan siswa untuk mengulang kembali modul <b>Meaning Lab</b> dan <b>Grammar Detective</b> untuk memperjelas perbedaan kata hubung pertentangan (BUT) dan akibat (SO).</p>
+        `;
+      } else {
+        interp.innerText = "Let's practise together. You can improve!";
+        interp.className = "text-xs font-bold text-red-600 mt-1";
+        summaryBox.innerHTML = `
+          <p class="font-bold text-red-800">🔄 Membutuhkan Remedial Terbimbing.</p>
+          <p>Siswa disarankan mengikuti sesi remedial terbimbing bersama guru menggunakan mode Presentasi MPI.</p>
+        `;
+      }
+
+      navigateTo('learning-report');
+    }
+
+    function reviewAnswersModal() {
+      const modal = document.getElementById('modal-review-answers');
+      const container = document.getElementById('review-modal-content');
+
+      let reviewHtml = finalAssessmentQuestions.map((q, idx) => {
+        const userAns = finalUserAnswers[idx];
+        const isCorrect = (userAns === q.correct);
+        return `
+          <div class="p-3 rounded-xl border ${isCorrect ? 'bg-emerald-50 border-emerald-200' : 'bg-red-50 border-red-200'} space-y-1">
+            <p class="font-bold text-slate-800">${idx + 1}. ${q.question}</p>
+            <p class="text-xs">Jawaban Siswa: <b>${userAns !== undefined ? userAns : 'Tidak dijawab'}</b> ${isCorrect ? '✓' : '❌'}</p>
+            <p class="text-xs text-slate-600 font-semibold">Jawaban Benar: <b>${q.correct}</b></p>
+            <p class="text-[11px] text-slate-500 italic">Penjelasan: ${q.explanation}</p>
+          </div>
+        `;
+      }).join('');
+
+      container.innerHTML = reviewHtml;
+      modal.classList.remove('hidden');
+    }
+
+    function closeReviewModal() {
+      document.getElementById('modal-review-answers').classList.add('hidden');
+    }
+
+    function restartAssessment() {
+      finalUserAnswers = {};
+      currentFinalIdx = 0;
+      navigateTo('final-challenge');
+      renderFinalQuestion();
+    }
+
+    function toggleTeacherMode() {
+      const modal = document.getElementById('modal-teacher');
+      modal.classList.toggle('hidden');
+    }
+
+    function togglePresentationMode() {
+      isPresentationMode = !isPresentationMode;
+      const btn = document.getElementById('btn-pres-mode');
+      const container = document.getElementById('main-container');
+
+      if (isPresentationMode) {
+        btn.classList.add('bg-amber-500', 'text-white');
+        container.classList.add('text-lg');
+        alert("📺 Presentation Mode Enabled: Text size enlarged for projector screen sharing.");
+      } else {
+        btn.classList.remove('bg-amber-500', 'text-white');
+        container.classList.remove('text-lg');
+        alert("Presentation Mode Disabled.");
+      }
+    }
+
+    function setTimingPreset(preset) {
+      const text = document.getElementById('timing-text');
+      if (preset === 'quick') {
+        text.innerHTML = "<b>Quick Review (25m):</b> Warm-up (3m) • Meaning Lab (5m) • Guided Practice (7m) • Game (7m) • Exit Ticket (3m)";
+      } else {
+        text.innerHTML = "<b>Full Review (50m):</b> Warm-up (5m) • Meaning Lab (10m) • Guided Practice (10m) • Game (15m) • Final Challenge (10m)";
+      }
+    }
+
+    function resetCurrentSession() {
+      if (confirm("Reset current session data and clear quiz progress?")) {
+        finalUserAnswers = {};
+        currentFinalIdx = 0;
+        localStorage.removeItem('linkit_student_data');
+        alert("Session cleared.");
+        location.reload();
+      }
+    }
+
+    function exportTeacherReport() {
+      const reportData = {
+        student: studentData,
+        answers: finalUserAnswers,
+        timestamp: new Date().toISOString()
+      };
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(reportData, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `LINK_IT_Report_${studentData.name.replace(/\s+/g, '_')}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    }
+
+    window.onload = function() {
+      // Load saved profile if exists
+      const saved = localStorage.getItem('linkit_student_data');
+      if (saved) {
+        try {
+          studentData = JSON.parse(saved);
+          document.getElementById('input-student-name').value = studentData.name || '';
+          document.getElementById('input-student-class').value = studentData.class || 'VIII G';
+          document.getElementById('nav-student-name').innerText = studentData.name || 'Guest';
+          document.getElementById('nav-student-class').innerText = studentData.class || 'VIII G';
+        } catch (e) {}
+      }
+
+      // Initialize Screen Views
+      switchMeaningTab('and');
+      renderMeaningQuiz();
+      renderDetectiveQuestion();
+      renderGuidedPractice();
+      renderFinalQuestion();
+
+      // Show Banner
+      document.getElementById('timing-guide-banner').classList.remove('hidden');
+    };
+  </script>
+</body>
+</html>
